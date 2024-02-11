@@ -1,3 +1,5 @@
+'use client';
+
 import * as math from 'mathjs';
 import { useEffect, useState } from 'react';
 
@@ -24,6 +26,8 @@ export default function Calculator() {
       setLeftOperand((prev) => prev + value.toString());
 
     if (value === '.') {
+      if (!operator && !leftOperand) return;
+
       if (!operator && !leftOperand.includes('.')) {
         setLeftOperand((prev) => prev + value);
         return;

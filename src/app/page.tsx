@@ -1,3 +1,9 @@
+import Calculator from '@/components/Calculator';
+
 export default function Home() {
-  return null;
+  return (
+    <div>
+      <Calculator />
+    </div>
+  );
 }
