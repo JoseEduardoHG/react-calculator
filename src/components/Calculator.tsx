@@ -15,7 +15,7 @@ export default function Calculator() {
   ];
 
   return (
-    <section className='container flex flex-col gap-4 px-4 py-8 bg-slate-800 rounded-2xl '>
+    <section className='container max-w-xl min-h-[35rem] flex flex-col justify-between gap-4 px-4 py-8 bg-slate-800 rounded-2xl sm:gap-8 sm:px-8 sm:py-16 md:max-w-sm md:gap-4 md:px-4 md:py-8'>
       <input
         type='text'
         placeholder=''
@@ -23,12 +23,12 @@ export default function Calculator() {
         name='expression'
         value={isError ? 'Error' : expression}
         readOnly
-        className='w-full h-12 bg-white text-slate-900 px-2 py-4 font-semibold text-2xl whitespace-nowrap overflow-x-hidden text-right rounded-md'
+        className='w-full h-20 bg-white text-slate-900 px-2 py-4 font-semibold text-6xl whitespace-nowrap overflow-x-hidden text-right rounded-md sm:h-28 sm:px-8 sm:font-bold sm:text-7xl md:px-4 md:font-bold md:text-6xl md:h-20'
       />
 
-      <section className='w-full flex flex-col gap-1'>
+      <section className='w-full flex flex-col gap-1 sm:gap-2'>
         {symbols.map((symbols, idx) => (
-          <div key={idx} role='row' className='w-full flex gap-1'>
+          <div key={idx} role='row' className='w-full flex gap-1 sm:gap-2'>
             {symbols.map((symbol) => (
               <CalculatorButton
                 key={symbol}
