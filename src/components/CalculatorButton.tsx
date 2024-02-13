@@ -26,7 +26,7 @@ export default function CalculatorButton({
         'bg-yellow-400': symbol === 'operator',
         'bg-red-500': symbol === 'clear',
         'bg-blue-500': symbol === 'equal',
-        'basis-2/4 aspect-[2/1]': isDoubleWidth,
+        'basis-2/4 aspect-[3/1]': isDoubleWidth,
       })}
       onClick={onClick}
     >
