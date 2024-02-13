@@ -2,6 +2,7 @@
 
 import * as math from 'mathjs';
 import { useEffect, useState } from 'react';
+import CalculatorButton from './CalculatorButton';
 
 export default function Calculator() {
   const [leftOperand, setLeftOperand] = useState('');
@@ -10,8 +11,8 @@ export default function Calculator() {
   const [expression, setExpression] = useState('');
 
   const symbols = [
-    ['C', 'AC', '/'],
-    [7, 8, 9, '*'],
+    ['AC', '⌫', '÷'],
+    [7, 8, 9, '×'],
     [4, 5, 6, '-'],
     [1, 2, 3, '+'],
     [0, '.', '='],
@@ -50,12 +51,19 @@ export default function Calculator() {
       if (leftOperand && operator && rightOperand) {
         try {
           console.log(`Evaluating: ${expression}`);
-          const result = math.evaluate(expression);
+          const finalExpression = expression
+            .replace('×', '*')
+            .replace('÷', '/');
+          const result = math.evaluate(finalExpression);
           setLeftOperand(result);
           setOperator('');
           setRightOperand('');
         } catch (err) {
-          if (err instanceof Error) console.log(err.name, err.message);
+          if (err instanceof Error)
+            console.log(
+              `Error name: ${err.name}`,
+              `Error message: ${err.message}`,
+            );
         }
       }
       return;
@@ -68,7 +76,7 @@ export default function Calculator() {
       return;
     }
 
-    if (value === 'C') {
+    if (value === '⌫') {
       if (rightOperand) {
         setRightOperand((prev) => prev.slice(0, -1));
         return;
@@ -93,11 +101,24 @@ export default function Calculator() {
       <input type='text' value={expression} readOnly />
 
       {symbols.map((symbols, idx) => (
-        <div key={idx} role='row'>
+        <div key={idx} role='row' className='flex gap-4'>
           {symbols.map((symbol) => (
-            <button key={symbol} onClick={() => handleClick(symbol)}>
+            <CalculatorButton
+              key={symbol}
+              symbol={
+                typeof symbol === 'number' || symbol === '.' || symbol === '⌫'
+                  ? 'number'
+                  : symbol === '='
+                  ? 'equal'
+                  : symbol === 'AC'
+                  ? 'clear'
+                  : 'operator'
+              }
+              width={symbol === 'AC' || symbol === 0 ? 2 : 1}
+              onClick={() => handleClick(symbol)}
+            >
               {symbol}
-            </button>
+            </CalculatorButton>
           ))}
         </div>
       ))}
