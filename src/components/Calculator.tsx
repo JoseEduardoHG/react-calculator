@@ -35,7 +35,7 @@ export default function Calculator() {
       const finalExpression = expression.replace('×', '*').replace('÷', '/');
 
       console.log(`Evaluating: ${finalExpression}`);
-      const result = math.evaluate(finalExpression);
+      const result = math.evaluate(finalExpression).toString();
 
       clearScreen();
       setLeftOperand(result);
