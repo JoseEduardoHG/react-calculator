@@ -32,10 +32,9 @@ export default function Calculator() {
 
   function evaluate() {
     try {
-      console.log(`Evaluating: ${expression}`);
+      const finalExpression = expression.replace('×', '*').replace('÷', '/');
 
-      const finalExpression =
-        expression || expression.replace('×', '*').replace('÷', '/');
+      console.log(`Evaluating: ${finalExpression}`);
       const result = math.evaluate(finalExpression);
 
       clearScreen();
@@ -57,14 +56,10 @@ export default function Calculator() {
       setLeftOperand((prev) => prev + value.toString());
 
     if (value === '.') {
-      if (!operator && !leftOperand) return;
-
       if (!operator && !leftOperand.includes('.')) {
         setLeftOperand((prev) => prev + value);
         return;
       }
-
-      if (operator && !rightOperand) return;
 
       if (operator && !rightOperand.includes('.')) {
         setRightOperand((prev) => prev + value);
@@ -109,38 +104,41 @@ export default function Calculator() {
   }
 
   return (
-    <div>
+    <section className='container flex flex-col gap-4 px-4 py-8 bg-slate-800 rounded-2xl '>
       <input
         type='text'
+        placeholder=''
         title='expression'
         name='expression'
-        placeholder=''
         value={isError ? 'Error' : expression}
         readOnly
+        className='w-full h-12 bg-white text-slate-900 px-2 py-4 font-semibold text-2xl whitespace-nowrap overflow-x-hidden text-right rounded-md'
       />
 
-      {symbols.map((symbols, idx) => (
-        <div key={idx} role='row' className='flex gap-4'>
-          {symbols.map((symbol) => (
-            <CalculatorButton
-              key={symbol}
-              symbol={
-                typeof symbol === 'number' || symbol === '.' || symbol === '⌫'
-                  ? 'number'
-                  : symbol === '='
-                  ? 'equal'
-                  : symbol === 'AC'
-                  ? 'clear'
-                  : 'operator'
-              }
-              width={symbol === 'AC' || symbol === 0 ? 2 : 1}
-              onClick={() => handleClick(symbol)}
-            >
-              {symbol}
-            </CalculatorButton>
-          ))}
-        </div>
-      ))}
-    </div>
+      <section className='w-full flex flex-col gap-1'>
+        {symbols.map((symbols, idx) => (
+          <div key={idx} role='row' className='w-full flex gap-1'>
+            {symbols.map((symbol) => (
+              <CalculatorButton
+                key={symbol}
+                symbol={
+                  typeof symbol === 'number' || symbol === '.' || symbol === '⌫'
+                    ? 'number'
+                    : symbol === '='
+                    ? 'equal'
+                    : symbol === 'AC'
+                    ? 'clear'
+                    : 'operator'
+                }
+                isDoubleWidth={symbol === 'AC' || symbol === 0 ? true : false}
+                onClick={() => handleClick(symbol)}
+              >
+                {symbol}
+              </CalculatorButton>
+            ))}
+          </div>
+        ))}
+      </section>
+    </section>
   );
 }
