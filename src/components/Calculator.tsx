@@ -9,6 +9,7 @@ export default function Calculator() {
   const [operator, setOperator] = useState('');
   const [rightOperand, setRightOperand] = useState('');
   const [expression, setExpression] = useState('');
+  const [isError, setIsError] = useState(false);
 
   const symbols = [
     ['AC', '⌫', '÷'],
@@ -22,7 +23,36 @@ export default function Calculator() {
     setExpression(`${leftOperand}${operator}${rightOperand}`);
   }, [leftOperand, operator, rightOperand]);
 
+  function clearScreen() {
+    setLeftOperand('');
+    setOperator('');
+    setRightOperand('');
+    setIsError(false);
+  }
+
+  function evaluate() {
+    try {
+      console.log(`Evaluating: ${expression}`);
+
+      const finalExpression =
+        expression || expression.replace('×', '*').replace('÷', '/');
+      const result = math.evaluate(finalExpression);
+
+      clearScreen();
+      setLeftOperand(result);
+    } catch (err) {
+      if (err instanceof Error) {
+        clearScreen();
+        setIsError(true);
+
+        console.log(`Error name: ${err.name}`, `Error message: ${err.message}`);
+      }
+    }
+  }
+
   function handleClick(value: number | string) {
+    if (isError) clearScreen();
+
     if (typeof value === 'number' && !operator)
       setLeftOperand((prev) => prev + value.toString());
 
@@ -48,31 +78,13 @@ export default function Calculator() {
       setRightOperand((prev) => prev + value.toString());
 
     if (value === '=') {
-      if (leftOperand && operator && rightOperand) {
-        try {
-          console.log(`Evaluating: ${expression}`);
-          const finalExpression = expression
-            .replace('×', '*')
-            .replace('÷', '/');
-          const result = math.evaluate(finalExpression);
-          setLeftOperand(result);
-          setOperator('');
-          setRightOperand('');
-        } catch (err) {
-          if (err instanceof Error)
-            console.log(
-              `Error name: ${err.name}`,
-              `Error message: ${err.message}`,
-            );
-        }
-      }
+      if (leftOperand && operator && rightOperand) evaluate();
+
       return;
     }
 
     if (value === 'AC') {
-      setLeftOperand('');
-      setOperator('');
-      setRightOperand('');
+      clearScreen();
       return;
     }
 
@@ -98,7 +110,14 @@ export default function Calculator() {
 
   return (
     <div>
-      <input type='text' value={expression} readOnly />
+      <input
+        type='text'
+        title='expression'
+        name='expression'
+        placeholder=''
+        value={isError ? 'Error' : expression}
+        readOnly
+      />
 
       {symbols.map((symbols, idx) => (
         <div key={idx} role='row' className='flex gap-4'>
