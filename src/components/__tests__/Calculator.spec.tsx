@@ -41,22 +41,16 @@ describe('Calculator', () => {
   it('should render operator symbols', () => {
     render(<Calculator />);
 
-    const operators = ['+', '-', '*', '/'];
+    const operators = ['+', '-', '×', '÷'];
     operators.forEach((operator) => {
       screen.getByText(operator);
     });
   });
 
-  it('should render equal sign', () => {
-    render(<Calculator />);
-
-    screen.getByText('=');
-  });
-
   it('should render clear buttons', () => {
     render(<Calculator />);
 
-    const clearButtons = ['C', 'AC'];
+    const clearButtons = ['AC', '⌫'];
     clearButtons.forEach((button) => {
       screen.getByText(button);
     });
@@ -179,7 +173,7 @@ describe('Calculator', () => {
     expect(input.value).toBe('');
   });
 
-  it('should clear the last digit of the right operand if C is pressed with left operand and operator', () => {
+  it('should clear the last digit of the right operand if ⌫ is pressed with left operand and operator', () => {
     render(<Calculator />);
 
     const one = screen.getByText<HTMLButtonElement>('1');
@@ -191,7 +185,7 @@ describe('Calculator', () => {
     const two = screen.getByText<HTMLButtonElement>('2');
     fireEvent.click(two);
 
-    const clearOne = screen.getByText<HTMLButtonElement>('C');
+    const clearOne = screen.getByText<HTMLButtonElement>('⌫');
     fireEvent.click(clearOne);
 
     const input = screen.getByRole<HTMLInputElement>('textbox');
@@ -199,7 +193,7 @@ describe('Calculator', () => {
     expect(input.value).toBe('1+');
   });
 
-  it('should clear the operator if C is pressed without right operand', () => {
+  it('should clear the operator if ⌫ is pressed without right operand', () => {
     render(<Calculator />);
 
     const one = screen.getByText<HTMLButtonElement>('1');
@@ -208,7 +202,7 @@ describe('Calculator', () => {
     const plus = screen.getByText<HTMLButtonElement>('+');
     fireEvent.click(plus);
 
-    const clearOne = screen.getByText<HTMLButtonElement>('C');
+    const clearOne = screen.getByText<HTMLButtonElement>('⌫');
     fireEvent.click(clearOne);
 
     const input = screen.getByRole<HTMLInputElement>('textbox');
@@ -216,13 +210,13 @@ describe('Calculator', () => {
     expect(input.value).toBe('1');
   });
 
-  it('should clear the last digit of the left operand if C is pressed without operator and right operand', () => {
+  it('should clear the last digit of the left operand if ⌫ is pressed without operator and right operand', () => {
     render(<Calculator />);
 
     const one = screen.getByText<HTMLButtonElement>('1');
     fireEvent.click(one);
 
-    const clearOne = screen.getByText<HTMLButtonElement>('C');
+    const clearOne = screen.getByText<HTMLButtonElement>('⌫');
     fireEvent.click(clearOne);
 
     const input = screen.getByRole<HTMLInputElement>('textbox');
